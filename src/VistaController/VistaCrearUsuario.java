@@ -21,13 +21,16 @@ public class VistaCrearUsuario extends javax.swing.JInternalFrame {
     public VistaCrearUsuario() {
         initComponents();
         
+        model.addColumn("USUARIO");
         model.addColumn("NOMBRE");
         model.addColumn("APELLIDO");
         model.addColumn("RUT");
-        model.addColumn("USER NAME");
-        model.addColumn("ID");
-        refrescarTabla();
-        llenarCombos();
+     
+        
+        llenarTablaUsuarios();
+        
+     
+       
         
     }
 
@@ -54,11 +57,10 @@ public class VistaCrearUsuario extends javax.swing.JInternalFrame {
         txt_apellido = new javax.swing.JTextField();
         txt_rut = new javax.swing.JTextField();
         btn_Editar = new javax.swing.JButton();
-        jSeparator2 = new javax.swing.JSeparator();
         btn_Agregar = new javax.swing.JButton();
         txt_contraseña = new javax.swing.JPasswordField();
-        jLabel8 = new javax.swing.JLabel();
-        combo_estado = new javax.swing.JComboBox<>();
+        checkBox_Admin = new javax.swing.JCheckBox();
+        chekBox_estado = new javax.swing.JCheckBox();
 
         setClosable(true);
 
@@ -76,7 +78,7 @@ public class VistaCrearUsuario extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(TablaUsuarios);
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 3, 24)); // NOI18N
-        jLabel1.setText("EDICION DE USARIO");
+        jLabel1.setText("EDICION DE USUARIO");
 
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
         jLabel2.setText("Nombre:");
@@ -109,60 +111,55 @@ public class VistaCrearUsuario extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel8.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
-        jLabel8.setText("Estado:");
+        checkBox_Admin.setFont(new java.awt.Font("Helvetica Neue", 3, 12)); // NOI18N
+        checkBox_Admin.setText("Administrador del Sistema");
+
+        chekBox_estado.setFont(new java.awt.Font("Helvetica Neue", 3, 12)); // NOI18N
+        chekBox_estado.setText("Activar Usuario");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(72, 72, 72)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(checkBox_Admin)
+                        .addGap(37, 37, 37)
+                        .addComponent(chekBox_estado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btn_Agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_Editar, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel5))
-                                        .addGap(35, 35, 35)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txt_rut, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                                            .addComponent(txt_apellido)
-                                            .addComponent(txt_usuario, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                                            .addComponent(txt_nombreUsuario)))
-                                    .addComponent(jLabel2)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel6)
-                                            .addComponent(jLabel8))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(combo_estado, 0, 280, Short.MAX_VALUE)
-                                            .addComponent(txt_contraseña))))
-                                .addGap(0, 43, Short.MAX_VALUE)))
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_Editar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_Agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(133, 133, 133)))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txt_rut, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                            .addComponent(txt_apellido)
+                            .addComponent(txt_usuario, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                            .addComponent(txt_nombreUsuario)))
+                    .addComponent(jLabel2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txt_contraseña, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -186,60 +183,89 @@ public class VistaCrearUsuario extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
                             .addComponent(txt_contraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(checkBox_Admin)
+                            .addComponent(chekBox_estado))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(combo_estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
-                        .addComponent(btn_Agregar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_Editar)
-                        .addGap(18, 18, 18)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(89, 89, 89))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(21, Short.MAX_VALUE))
+                            .addComponent(btn_Agregar)
+                            .addComponent(btn_Editar)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_AgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_AgregarActionPerformed
+        String usuario = txt_usuario.getText().trim();
         String nombre = txt_nombreUsuario.getText().trim();
         String apellido = txt_apellido.getText().trim();
         String rut = txt_rut.getText().trim();
         String contraseña = txt_contraseña.getText().trim();
-        String usuario = txt_usuario.getText().trim();
+        int tipo = 0;
+        int activo = 0;
         
-        int estado = 0;
-        String estadoString = combo_estado.getSelectedItem().toString();
+        boolean estado = chekBox_estado.isSelected();
+        boolean admin = checkBox_Admin.isSelected();
         
-        
-        
-        if (estadoString.contains("activado")) {
-            estado = 1;
+        if (admin) {
+            tipo = 1;
             
+        } else {
+            tipo = 0;
         }
         
-                if (estadoString.contains("desactivado")) {
-            estado = 2;
+        if (estado) {
+            activo = 1;
             
+        } else {
+            activo = 0;
         }
+        
+        if (!usuario.isEmpty()&&!nombre.isEmpty()&&!apellido.isEmpty()&&!rut.isEmpty()&&!contraseña.isEmpty()){
+                  
+          
+            
+            
+            try {
+    
+    boolean sucess = Usuario.verificacionDuplicado(usuario, rut);
+                if (!sucess) {
+                    
+                        boolean evento = Usuario.insertarUsuario(nombre, apellido, rut, contraseña, usuario, activo, tipo);              if (evento) {
+                JOptionPane.showMessageDialog(this, "Usuario agregado exitosamente");
+            } else {
+                   JOptionPane.showMessageDialog(this, "No se pudo agregar usuario");
+            }
+                    
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ya existe un usuario con ese Nombre/Rut");
+                }
+              
+
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(this, "Problema con conexion en base de datos o insercion de datos en la tabla vistausariocontrolleragerar.usuario");
+        } 
+          
+            
+  
+                   
+        }
+else{
+            JOptionPane.showMessageDialog(this, "Debe completar todos los datos del ususario");
+                           }
+        
+        
+        
+          
                 
-                
         
-        UsuarioController usuarioController = new UsuarioController();
-        
-        boolean evento = usuarioController.InsertarNuevoUsuario(nombre, apellido, usuario, contraseña, rut, estado);
-        
-        if (evento) {
-            
-            JOptionPane.showMessageDialog(this, "USUARIO CREADO CORRECTAMENTE");
-            
-        }
-        
-     refrescarTabla();
-     limpiar();
+limpiar();
         
     }//GEN-LAST:event_btn_AgregarActionPerformed
 
@@ -252,42 +278,7 @@ public class VistaCrearUsuario extends javax.swing.JInternalFrame {
     
     private void btn_EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EditarActionPerformed
 
-        String nombre = txt_nombreUsuario.getText().trim();
-        String apellido = txt_apellido.getText().trim();
-        String rut = txt_rut.getText().trim();
-        String contraseña = txt_contraseña.getText().trim();
-        String usuario = txt_usuario.getText().trim();
-        
-        
-         int estado = 0;
-        String estadoString = combo_estado.getSelectedItem().toString();
-        
-        
-        
-        if (estadoString.contains("activado")) {
-            estado = 1;
-            
-        }
-        
-                if (estadoString.contains("desactivado")) {
-            estado = 2;
-            
-        }
-        
-        UsuarioController usuarioController = new UsuarioController();
-        
-        boolean evento = usuarioController.editarUsuario(nombre, apellido, usuario, contraseña, rut, estado);
-        
-        if (evento) {
-            
-            JOptionPane.showMessageDialog(this, "USUARIO MODIFICADO CORRECTAMENTE");
-            
-        }
-        
-     refrescarTabla();
-     limpiar();
-        
-        
+
         
         
         
@@ -304,83 +295,46 @@ public class VistaCrearUsuario extends javax.swing.JInternalFrame {
 
     
     
+
     
-     //user_id , usuarioNombre, usuarioApellido, usuarioRut
-    
-    public void refrescarTabla(){
-        model.setRowCount(0);
-        TablaUsuarios.setModel(model);
-        
-        UsuarioController usuarioController = new UsuarioController();
-        ArrayList <Usuario> todosLosUsuarios = usuarioController.ListarTodoUsuario();
-        
-       
-        
-        
-        for (Usuario usuarioIndex : todosLosUsuarios) {
-            
-            Object index [] = new Object [6];
-            index[0] = usuarioIndex.getUsuarioNombre();
-            index[1] = usuarioIndex.getUsuarioApellido();
-            index[2] = usuarioIndex.getUsuarioRut();
-            index[3] = usuarioIndex.getUsuario();
-            index[4] = usuarioIndex.getUser_id();
-            index[5] = usuarioIndex.getVisible();
-            
-            
-            
-            if ((int) index[5] == 1) {
-                model.addRow(index);
-            }
-            
-            
+
            
-            
-        }
+          
          
 
         
        
-        
-    }
+   public void llenarTablaUsuarios(){
+   model.setRowCount(0);
+   TablaUsuarios.setModel(model);
+   
+       try {
+           
+           ArrayList<Usuario> listaUsuarios = Usuario.todosUsuarios();
+           
+           for (Usuario UsuarioIndex : listaUsuarios) {
+               Object [] objeto = new Object[4];
+                       objeto[0]= UsuarioIndex.getUsuario();
+                       objeto[1]= UsuarioIndex.getUsuarioNombre();
+                       objeto[2]= UsuarioIndex.getUsuarioApellido();
+                       objeto[3]= UsuarioIndex.getUsuarioRut();
+                              
+                       
+                       model.addRow(objeto);
+               
+           }
+           
+       } catch (Exception e) {
+       }
+   
+   
+   
+   
+   
+   }  
     
     
-    public void llenarCombos(){
-    
-        ArrayList<String> estadosStrings = new ArrayList<>();
-        estadosStrings.add("activado");
-        estadosStrings.add("desactivado");
-        
-        
-        for (String estados : estadosStrings) {
-            combo_estado.addItem(estados);
-        }
-        
-    }
-    
-    /*
-    public void llenarComboUsuarios(){
-    
-        UsuarioController usuarioController = new UsuarioController();
-        ArrayList <Usuario> todosLosUsuarios = usuarioController.ListarTodoUsuario();
-        
-        for (Usuario usuario : todosLosUsuarios) {
-            combo_usuarios.addItem(usuario.getUsuario());
-            
-        }
-        
-        ArrayList<String> estadosStrings = new ArrayList<>();
-        estadosStrings.add("activado");
-        estadosStrings.add("desactivado");
-        
-        
-        for (String estados : estadosStrings) {
-            combo_estado.addItem(estados);
-        }
-        
-    }
-    */
-    
+
     
     public void limpiar(){
     
@@ -389,23 +343,25 @@ public class VistaCrearUsuario extends javax.swing.JInternalFrame {
         txt_apellido.setText("");
         txt_rut.setText("");
         txt_contraseña.setText("");
+        checkBox_Admin.setSelected(false);
+        chekBox_estado.setSelected(false);
+        llenarTablaUsuarios();
     
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablaUsuarios;
     private javax.swing.JButton btn_Agregar;
     private javax.swing.JButton btn_Editar;
-    private javax.swing.JComboBox<String> combo_estado;
+    private javax.swing.JCheckBox checkBox_Admin;
+    private javax.swing.JCheckBox chekBox_estado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField txt_apellido;
     private javax.swing.JPasswordField txt_contraseña;
     private javax.swing.JTextField txt_nombreUsuario;

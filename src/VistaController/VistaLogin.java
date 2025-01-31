@@ -1,9 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package VistaController;
 
+import Model.Usuario;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 /**
  *
  * @author nicolas
@@ -26,50 +27,84 @@ public class VistaLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollBar1 = new javax.swing.JScrollBar();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btn_login = new javax.swing.JButton();
+        txt_usr = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txt_password = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
-
-        jLabel2.setText("jLabel2");
-
-        jLabel3.setText("jLabel3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setText("jButton1");
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(new java.awt.Font("Helvetica Neue", 3, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Usuario");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(196, 294, 182, 28));
+
+        btn_login.setBackground(new java.awt.Color(51, 51, 51));
+        btn_login.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        btn_login.setForeground(new java.awt.Color(255, 255, 255));
+        btn_login.setText("Login");
+        btn_login.setBorder(null);
+        btn_login.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_loginActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btn_login, new org.netbeans.lib.awtextra.AbsoluteConstraints(182, 574, 140, 42));
+
+        txt_usr.setBackground(new java.awt.Color(51, 51, 51));
+        txt_usr.setFont(new java.awt.Font("Helvetica", 1, 24)); // NOI18N
+        txt_usr.setForeground(new java.awt.Color(255, 255, 255));
+        txt_usr.setBorder(null);
+        getContentPane().add(txt_usr, new org.netbeans.lib.awtextra.AbsoluteConstraints(98, 336, 322, 28));
+
+        jLabel4.setFont(new java.awt.Font("Helvetica Neue", 3, 36)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Contraseña");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(154, 448, 210, 28));
+
+        txt_password.setBackground(new java.awt.Color(51, 51, 51));
+        txt_password.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        txt_password.setForeground(new java.awt.Color(255, 255, 255));
+        txt_password.setBorder(null);
+        getContentPane().add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(98, 490, 322, 28));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/55555.png"))); // NOI18N
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jButton1)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jButton1)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-3, 0, 518, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -14, 518, 742));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
+  
+        Usuario usr = new Usuario();
+        
+       String usrString = txt_usr.getText().trim();
+       String password = txt_password.getText().trim();
+        
+        
+        try {
+            if (usr.verificacion(usrString, password)) {
+                
+                VistaMain vistaMain = new VistaMain();
+                vistaMain.setVisible(true);
+                this.setVisible(false);
+                
+                
+            } else {
+                JOptionPane.showMessageDialog(this, "Datos de Usuario Incorrectos / Usuario Bloqueado");
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(VistaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_btn_loginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -105,12 +140,25 @@ public class VistaLogin extends javax.swing.JFrame {
             }
         });
     }
+    
+    
+    
+    
+    public static void visible(){
+    
+       VistaLogin thisVistaLogin = new VistaLogin();
+       thisVistaLogin.setVisible(true);
+       
+      
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btn_login;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollBar jScrollBar1;
+    private javax.swing.JPasswordField txt_password;
+    private javax.swing.JTextField txt_usr;
     // End of variables declaration//GEN-END:variables
 }

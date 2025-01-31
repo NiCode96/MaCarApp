@@ -3,13 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package VistaController;
-
+import Model.Usuario;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 
 /**
  *
@@ -63,9 +65,11 @@ public class VistaMain extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -130,6 +134,15 @@ public class VistaMain extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem7);
 
+        jMenuItem9.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
+        jMenuItem9.setText("Cerrar Sesion");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem9);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("CONFIGURACIONES");
@@ -151,6 +164,15 @@ public class VistaMain extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem5);
+
+        jMenuItem10.setFont(new java.awt.Font("Helvetica Neue", 3, 12)); // NOI18N
+        jMenuItem10.setText("Ingreso Marca Repuesto");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem10);
 
         jMenuItem8.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
         jMenuItem8.setText("Edicion Usuario");
@@ -213,9 +235,9 @@ formCliente.setVisible(true);
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
 
-VistaAgregarTipo formTipo = new VistaAgregarTipo();
-desktopPane.add(formTipo);
-formTipo.setVisible(true);
+VistaTipoRepuesto formVistaTipo = new VistaTipoRepuesto();
+desktopPane.add(formVistaTipo);
+formVistaTipo.setVisible(true);
 
 
 
@@ -283,10 +305,30 @@ formCaja.setVisible(true);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+       
+       
+        
+       String usr = JOptionPane.showInputDialog(null, "USUARIO:");
+       
+        try {
+                 boolean sucess = Usuario.verificacionAdmin(usr); 
+                   
+                   if (sucess) {
+                       
 
 VistaCrearUsuario formVistaCrearUsuario = new VistaCrearUsuario();
 desktopPane.add(formVistaCrearUsuario);
 formVistaCrearUsuario.setVisible(true);
+
+
+            } else {
+                       JOptionPane.showMessageDialog(this, "Usuario no posee permiso de Administrador.");
+            }
+
+
+        } catch (Exception e) {
+        }
+
 
 
 
@@ -295,6 +337,20 @@ formVistaCrearUsuario.setVisible(true);
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+       
+        VistaLogin.visible();
+        this.setVisible(false);
+        this.dispose();
+    
+       
+        
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     
     
@@ -329,6 +385,7 @@ formVistaCrearUsuario.setVisible(true);
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
@@ -336,6 +393,7 @@ formVistaCrearUsuario.setVisible(true);
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private java.awt.Menu menu1;
     private java.awt.Menu menu2;

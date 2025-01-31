@@ -3,18 +3,48 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package VistaController;
+import Model.Marca;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JDesktopPane;
+import Controller.MarcaController;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
  * @author nicolas
  */
 public class VistaIngresoMarca extends javax.swing.JInternalFrame {
+    
+  
+    JDesktopPane desktopPane = new JDesktopPane();
+    DefaultTableModel model = new DefaultTableModel();
 
     /**
      * Creates new form VistaIngresoMarca
      */
     public VistaIngresoMarca() {
+        
         initComponents();
+        model.addColumn("CODIGO");
+        model.addColumn("MARCA");
+        
+
+
+        try {
+        llenarComboMarca();
+        } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Error al llenar el combo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        Logger.getLogger(VistaIngresoMarca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        seleccionId();
+        llenarTabla();
+        
     }
 
     /**
@@ -26,68 +56,78 @@ public class VistaIngresoMarca extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        txt_marca = new javax.swing.JTextField();
+        PrincipalPanel = new javax.swing.JPanel();
+        combo_marca = new javax.swing.JComboBox<>();
+        btn_agregarMarca = new javax.swing.JButton();
+        btn_modificar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        txt_marca = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        id_marca = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabla_marca = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
 
         setClosable(true);
 
-        jButton1.setText("Agregar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        PrincipalPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        combo_marca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                combo_marcaActionPerformed(evt);
             }
         });
+        PrincipalPanel.add(combo_marca, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 73, 284, -1));
+
+        btn_agregarMarca.setText("Agregar");
+        btn_agregarMarca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_agregarMarcaActionPerformed(evt);
+            }
+        });
+        PrincipalPanel.add(btn_agregarMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 168, 168, -1));
+
+        btn_modificar.setText("Modificar");
+        btn_modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_modificarActionPerformed(evt);
+            }
+        });
+        PrincipalPanel.add(btn_modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(231, 168, 182, -1));
+
+        jLabel4.setFont(new java.awt.Font("Helvetica Neue", 3, 14)); // NOI18N
+        jLabel4.setText("Buscar Marca");
+        PrincipalPanel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 71, 94, 26));
+
+        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 3, 14)); // NOI18N
+        jLabel1.setText("Nueva Marca");
+        PrincipalPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 122, 94, 29));
 
         txt_marca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_marcaActionPerformed(evt);
             }
         });
-
-        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 3, 14)); // NOI18N
-        jLabel1.setText("Nueva Marca");
-
-        jButton2.setText("Modificar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jButton3.setText("Eliminar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
+        PrincipalPanel.add(txt_marca, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 125, 284, -1));
 
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 3, 18)); // NOI18N
         jLabel2.setText("INGRESO NUEVA MARCA");
+        PrincipalPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 16, 235, -1));
 
-        jLabel3.setText("ID");
-
-        id_marca.setText("-");
-
-        jMenu1.setText("Opciones");
-
-        jMenuItem1.setText("Ver Todas las Marcas");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+        tabla_marca.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        });
-        jMenu1.add(jMenuItem1);
+        ));
+        jScrollPane1.setViewportView(tabla_marca);
 
-        jMenuBar1.add(jMenu1);
+        PrincipalPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 238, 532, 210));
 
         setJMenuBar(jMenuBar1);
 
@@ -95,89 +135,192 @@ public class VistaIngresoMarca extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_marca, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 34, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(85, 85, 85)
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(id_marca)))
-                .addGap(39, 39, 39))
+            .addComponent(PrincipalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txt_marca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(id_marca))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2))
-                .addGap(29, 29, 29))
+                .addComponent(PrincipalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    
+    public void llenarTabla(){
+    model.setRowCount(0);
+    tabla_marca.setModel(model);
+    
+     MarcaController marcaController = new MarcaController();
+        try {
+            
+              ArrayList<Marca>listaMarca = marcaController.listaTodasMarcas();
+        
+      
+            for (Marca marcaIndex : listaMarca) {
+                Object objeto [] = new Object[2];
+               objeto[0] = marcaIndex.getId_marca();
+               objeto[1]= marcaIndex.getNombreMarca();
+        
+                model.addRow(objeto);
+    
+      
+            }
+    
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "No es posible cargar los datos en la tabla Marcas");
+        }
+      
+    
+    
+    }
+    
+    
+    
+    private void btn_agregarMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarMarcaActionPerformed
+        String marca = txt_marca.getText().trim();
+        MarcaController marcaController = new MarcaController();
+        
+        
+        
+        
+      
+        
+        try {
+      
+            if (!marca.isEmpty() && !Marca.verificarDuplicidad(marca)) {
+                
+                Marca.insertarMarca(marca);
+                JOptionPane.showMessageDialog(this, "Marca ingresada Correctamente");
+                
+            } else {
+                
+                 JOptionPane.showMessageDialog(this, "Debe completar campos con datos no duplicados");
+            }
+            
+            
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al Agregar Marca, problema relacionado con conexion a Base de Datos SQL");
+            Logger.getLogger(VistaIngresoMarca.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+
+   refresh();
+           
+        
+    }//GEN-LAST:event_btn_agregarMarcaActionPerformed
+
+    private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
+    String nombreActual = combo_marca.getSelectedItem().toString();
+    String nombreNuevo = txt_marca.getText().trim();
+
+MarcaController marcaController = new MarcaController();
+
+      
+        try {
+            if (!nombreNuevo.isEmpty() && !Marca.verificarDuplicidad(nombreNuevo)) {
+            
+            marcaController.modificarMarca(nombreActual, nombreNuevo);
+            JOptionPane.showMessageDialog(this, "MODIFICACION EXITOSA REALIZADA");
+            
+            } else {
+            
+              JOptionPane.showMessageDialog(this, "Deben agregarse datos validos");
+            } 
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "NO ES POSIBLE REALIZAR OPERACION");
+        }
+
+
+ 
+refresh();
+
+
+
+    }//GEN-LAST:event_btn_modificarActionPerformed
+
+
+
+
+public void refresh(){
+    try {
+        txt_marca.setText("");
+llenarComboMarca();
+llenarTabla();
+    } catch (Exception e) {
+    }
+}
+
 
     private void txt_marcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_marcaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_marcaActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void combo_marcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_marcaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_combo_marcaActionPerformed
 
+    
+    
+    public void llenarComboMarca()throws SQLException{
+        
+        combo_marca.removeAllItems();
+    
+    MarcaController marcaController = new MarcaController();
+    
+        ArrayList<Marca>listaMarca = marcaController.listaTodasMarcas();
+        
+      
+            for (Marca marcaIndex : listaMarca) {
+            String marcaNombre = marcaIndex.getNombreMarca();
+            
+            combo_marca.addItem(marcaNombre);
+            
+        
+    
+      
+            }
+    
+            
+            
+          
+    }
+    
+    
+    
+    
+    
+    public void seleccionId (){
+    String marcaSeleccionda = combo_marca.getSelectedItem().toString();
+    MarcaController marcaController = new MarcaController();
+        try {
+           Marca marcaSelect = new Marca();
+           marcaSelect = marcaController.buscarIdMarca(marcaSeleccionda);
+           txt_marca.setText(String.valueOf(marcaSelect.getId_marca()));
+          
+                
+        } catch (Exception e) {
+        }
+    
+    
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel id_marca;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JPanel PrincipalPanel;
+    private javax.swing.JButton btn_agregarMarca;
+    private javax.swing.JButton btn_modificar;
+    private javax.swing.JComboBox<String> combo_marca;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenu jMenu1;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tabla_marca;
     private javax.swing.JTextField txt_marca;
     // End of variables declaration//GEN-END:variables
 }
