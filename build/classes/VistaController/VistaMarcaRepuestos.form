@@ -27,7 +27,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="PrincipalPanel" alignment="0" pref="567" max="32767" attributes="0"/>
+          <Component id="PrincipalPanel" alignment="0" pref="563" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -132,11 +132,11 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Helvetica Neue" size="18" style="3"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="INGRESO NUEVA MARCA"/>
+            <Property name="text" type="java.lang.String" value="INGRESO MARCA REPUESTOS"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="23" y="16" width="235" height="-1"/>
+              <AbsoluteConstraints x="23" y="16" width="280" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>

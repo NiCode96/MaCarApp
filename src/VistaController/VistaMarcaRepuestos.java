@@ -3,13 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package VistaController;
-import Model.Marca;
+import Model.MarcaRepuesto;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JDesktopPane;
-import Controller.MarcaController;
+import Controller.MarcaRepuestoController;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -111,8 +111,8 @@ public class VistaMarcaRepuestos extends javax.swing.JInternalFrame {
         PrincipalPanel.add(txt_marca, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 125, 284, -1));
 
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 3, 18)); // NOI18N
-        jLabel2.setText("INGRESO NUEVA MARCA");
-        PrincipalPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 16, 235, -1));
+        jLabel2.setText("INGRESO MARCA REPUESTOS");
+        PrincipalPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 16, 280, -1));
 
         tabla_marca.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -135,7 +135,7 @@ public class VistaMarcaRepuestos extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PrincipalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
+            .addComponent(PrincipalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,13 +153,13 @@ public class VistaMarcaRepuestos extends javax.swing.JInternalFrame {
     model.setRowCount(0);
     tabla_marca.setModel(model);
     
-     MarcaController marcaController = new MarcaController();
+     MarcaRepuestoController marcaRepuestoController = new MarcaRepuestoController();
         try {
             
-              ArrayList<Marca>listaMarca = marcaController.listaTodasMarcas();
+              ArrayList<MarcaRepuesto>listaMarca = marcaRepuestoController.listaTodasMarcas();
         
       
-            for (Marca marcaIndex : listaMarca) {
+            for (MarcaRepuesto marcaIndex : listaMarca) {
                 Object objeto [] = new Object[2];
                objeto[0] = marcaIndex.getId_marca();
                objeto[1]= marcaIndex.getNombreMarca();
@@ -182,7 +182,7 @@ public class VistaMarcaRepuestos extends javax.swing.JInternalFrame {
     
     private void btn_agregarMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarMarcaActionPerformed
         String marca = txt_marca.getText().trim();
-        MarcaController marcaController = new MarcaController();
+        MarcaRepuestoController marcaController = new MarcaRepuestoController();
         
         
         
@@ -191,9 +191,9 @@ public class VistaMarcaRepuestos extends javax.swing.JInternalFrame {
         
         try {
       
-            if (!marca.isEmpty() && !Marca.verificarDuplicidad(marca)) {
+            if (!marca.isEmpty() && !MarcaRepuesto.verificarDuplicidad(marca)) {
                 
-                Marca.insertarMarca(marca);
+                MarcaRepuesto.insertarMarca(marca);
                 JOptionPane.showMessageDialog(this, "Marca ingresada Correctamente");
                 
             } else {
@@ -219,11 +219,11 @@ public class VistaMarcaRepuestos extends javax.swing.JInternalFrame {
     String nombreActual = combo_marca.getSelectedItem().toString();
     String nombreNuevo = txt_marca.getText().trim();
 
-MarcaController marcaController = new MarcaController();
+MarcaRepuestoController marcaController = new MarcaRepuestoController();
 
       
         try {
-            if (!nombreNuevo.isEmpty() && !Marca.verificarDuplicidad(nombreNuevo)) {
+            if (!nombreNuevo.isEmpty() && !MarcaRepuesto.verificarDuplicidad(nombreNuevo)) {
             
             marcaController.modificarMarca(nombreActual, nombreNuevo);
             JOptionPane.showMessageDialog(this, "MODIFICACION EXITOSA REALIZADA");
@@ -271,12 +271,11 @@ llenarTabla();
         
         combo_marca.removeAllItems();
     
-    MarcaController marcaController = new MarcaController();
+    MarcaRepuestoController marcaRepuestoController = new MarcaRepuestoController();
     
-        ArrayList<Marca>listaMarca = marcaController.listaTodasMarcas();
-        
+        ArrayList<MarcaRepuesto>listaMarca = marcaRepuestoController.listaTodasMarcas();
       
-            for (Marca marcaIndex : listaMarca) {
+            for (MarcaRepuesto marcaIndex : listaMarca) {
             String marcaNombre = marcaIndex.getNombreMarca();
             
             combo_marca.addItem(marcaNombre);
@@ -297,9 +296,10 @@ llenarTabla();
     
     public void seleccionId (){
     String marcaSeleccionda = combo_marca.getSelectedItem().toString();
-    MarcaController marcaController = new MarcaController();
+    MarcaRepuestoController marcaController = new MarcaRepuestoController();
+           
         try {
-           Marca marcaSelect = new Marca();
+           MarcaRepuesto marcaSelect = new MarcaRepuesto();
            marcaSelect = marcaController.buscarIdMarca(marcaSeleccionda);
            txt_marca.setText(String.valueOf(marcaSelect.getId_marca()));
           

@@ -42,7 +42,7 @@ public class VistaLogin extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 3, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Usuario");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(196, 294, 182, 28));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(196, 294, 154, 42));
 
         btn_login.setBackground(new java.awt.Color(51, 51, 51));
         btn_login.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
