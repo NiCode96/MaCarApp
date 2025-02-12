@@ -17,6 +17,7 @@ public class ProductoController {
     
     public boolean insertarProducto (
   String nombreProducto,
+  String sku,
   String tipoProducto,
   String marcaRepuesto,
   String marcaVehiculo,
@@ -24,10 +25,12 @@ public class ProductoController {
   int cantidadRecepcionada,
   int id_marca,
   int id_marcaRepuesto,
-  int id_tipo){
+  int id_tipo,
+  int valor,
+  int valorProducto){
     
         try {
-            Producto.ingresoProducto(nombreProducto, tipoProducto, marcaRepuesto, marcaVehiculo, modelosCompatibles, cantidadRecepcionada, id_marca, id_marcaRepuesto, id_tipo);
+            Producto.ingresoProducto(nombreProducto, sku, tipoProducto, marcaRepuesto, marcaVehiculo, modelosCompatibles, cantidadRecepcionada, id_marca, id_marcaRepuesto, id_tipo, valor, valorProducto);
             return  true;
             
         } catch (Exception e) {
@@ -39,7 +42,8 @@ public class ProductoController {
     
     
     public boolean modificarProducto (  
-  String nombreProducto,
+ String nombreProducto,
+  String sku,
   String tipoProducto,
   String marcaRepuesto,
   String marcaVehiculo,
@@ -48,12 +52,14 @@ public class ProductoController {
   int id_marca,
   int id_marcaRepuesto,
   int id_tipo,
+  int valor,
+  int valorProducto,
   int id_producto){
         
         
         try {
             
-            Producto.modificarProducto(nombreProducto, tipoProducto, marcaRepuesto, marcaVehiculo, modelosCompatibles, cantidadRecepcionada, id_marca, id_marcaRepuesto, id_tipo, id_producto);
+            Producto.modificarProducto(nombreProducto, sku, tipoProducto, marcaRepuesto, marcaVehiculo, modelosCompatibles, cantidadRecepcionada, id_marca, id_marcaRepuesto, id_tipo, valor, valorProducto, id_producto);
             
         } catch (Exception e) {
         }

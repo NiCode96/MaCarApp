@@ -22,6 +22,7 @@ public class Producto {
     
   int id_producto;
   String nombreProducto;
+  String sku;
   String tipoProducto;
   String marcaRepuesto;
   String marcaVehiculo;
@@ -31,10 +32,13 @@ public class Producto {
   int id_marcaRepuesto;
   int id_tipo;
   int producto_estado;
+  int valor;
+  int valorProducto;
 
-    public Producto(int id_producto, String nombreProducto, String tipoProducto, String marcaRepuesto, String marcaVehiculo, String modelosCompatibles, int cantidadRecepcionada, int id_marca, int id_marcaRepuesto, int id_tipo,int producto_estado) {
+    public Producto(int id_producto, String nombreProducto,String sku, String tipoProducto, String marcaRepuesto, String marcaVehiculo, String modelosCompatibles, int cantidadRecepcionada, int id_marca, int id_marcaRepuesto, int id_tipo,int producto_estado, int valor, int valorProducto) {
         this.id_producto = id_producto;
         this.nombreProducto = nombreProducto;
+        this.sku = sku;
         this.tipoProducto = tipoProducto;
         this.marcaRepuesto = marcaRepuesto;
         this.marcaVehiculo = marcaVehiculo;
@@ -44,15 +48,32 @@ public class Producto {
         this.id_marcaRepuesto = id_marcaRepuesto;
         this.id_tipo = id_tipo;
         this.producto_estado = producto_estado;
+        this.valor = valor;
+        this.valorProducto = valorProducto;
+        
     }
 
     public Producto() {
     }
 
+    public String getSku() {
+        return sku;
+    }
+
+    public int getValorProducto() {
+        return valorProducto;
+    }
+
+    
     public int getId_tipo() {
         return id_tipo;
     }
 
+    public int getValor() {
+        return valor;
+    }
+
+    
  
     public String getTipoProducto() {
         return tipoProducto;
@@ -94,9 +115,19 @@ public class Producto {
     public int getProducto_estado() {
         return producto_estado;
     }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public void setValorProducto(int valorProducto) {
+        this.valorProducto = valorProducto;
+    }
     
     
 
+    
+    
     public void setId_producto(int id_producto) {
         this.id_producto = id_producto;
     }
@@ -140,7 +171,12 @@ public class Producto {
     public void setProducto_estado(int producto_estado) {
         this.producto_estado = producto_estado;
     }
+
+    public void setValor(int valor) {
+        this.valor = valor;
+    }
   
+    
     
     
   
@@ -170,6 +206,7 @@ public class Producto {
               Producto producto = new Producto();
               producto.setId_producto(resultado.getInt("Id_producto"));
               producto.setNombreProducto(resultado.getString("nombreProducto"));
+              producto.setSku(resultado.getString("sku"));
               producto.setTipoProducto(resultado.getString("tipoProducto"));
               producto.setMarcaRepuesto(resultado.getString("marcaRepuesto"));
               producto.setMarcaVehiculo(resultado.getString("marcaVehiculo"));
@@ -179,6 +216,8 @@ public class Producto {
               producto.setId_marcaRepuesto(resultado.getInt("id_marcaRepuesto"));
               producto.setId_tipo(resultado.getInt("id_tipo"));
               producto.setProducto_estado(resultado.getInt("producto_estado"));
+              producto.setValor(resultado.getInt("valor"));
+              producto.setValorProducto(resultado.getInt("valorProducto"));
               
               tablaProductos.add(producto);
               
@@ -203,6 +242,7 @@ public class Producto {
   public static boolean ingresoProducto(
           
   String nombreProducto,
+  String sku,
   String tipoProducto,
   String marcaRepuesto,
   String marcaVehiculo,
@@ -210,7 +250,10 @@ public class Producto {
   int cantidadRecepcionada,
   int id_marca,
   int id_marcaRepuesto,
-  int id_tipo) throws SQLException{
+  int id_tipo,
+  int valor,
+  int valorProducto
+  ) throws SQLException{
       
       
   Conexion conexion = new Conexion();
@@ -223,19 +266,22 @@ public class Producto {
       
       try { 
           conn = conexion.enlace;
-          String consultaSQL = "INSERT INTO Producto (nombreProducto, tipoProducto, marcaRepuesto, marcaVehiculo, modelosCompatibles, cantidadRecepcionada, id_marca, id_marcaRepuesto, id_tipo) " +
-                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+          String consultaSQL = "INSERT INTO Producto (nombreProducto, sku, tipoProducto, marcaRepuesto, marcaVehiculo, modelosCompatibles, cantidadRecepcionada, id_marca, id_marcaRepuesto, id_tipo, valor, valorProducto ) " +
+                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
           
           PreparedStatement statement = conn.prepareStatement(consultaSQL);
           statement.setString(1, nombreProducto);
-          statement.setString(2, tipoProducto);
-          statement.setString(3, marcaRepuesto);
-          statement.setString(4, marcaVehiculo);
-          statement.setString(5, modelosCompatibles);
-          statement.setInt(6, cantidadRecepcionada);
-          statement.setInt(7, id_marca);
-          statement.setInt(8, id_marcaRepuesto);
-          statement.setInt(9, id_tipo);
+          statement.setString(2, sku);
+          statement.setString(3, tipoProducto);
+          statement.setString(4, marcaRepuesto);
+          statement.setString(5, marcaVehiculo);
+          statement.setString(6, modelosCompatibles);
+          statement.setInt(7, cantidadRecepcionada);
+          statement.setInt(8, id_marca);
+          statement.setInt(9, id_marcaRepuesto);
+          statement.setInt(10, id_tipo);
+          statement.setInt(11, valor);
+          statement.setInt(12, valorProducto);
           
           
            int filas = statement.executeUpdate();
@@ -309,6 +355,7 @@ public static int VerificacionAsignacion_idTipo(String tipoRepuesto) {
 
 public static boolean modificarProducto (        
   String nombreProducto,
+  String sku,
   String tipoProducto,
   String marcaRepuesto,
   String marcaVehiculo,
@@ -317,7 +364,10 @@ public static boolean modificarProducto (
   int id_marca,
   int id_marcaRepuesto,
   int id_tipo,
-  int id_producto) throws SQLException{
+  int valor,
+  int valorProducto,
+  int id_producto
+  ) throws SQLException{
     
     Conexion conexion = new Conexion();
       Connection conn = null;
@@ -330,22 +380,25 @@ public static boolean modificarProducto (
       try {
         
           conn = conexion.enlace;
-          String consultaSQL = "UPDATE Producto SET nombreProducto = ?, tipoProducto = ?, marcaRepuesto = ?, marcaVehiculo = ?, modelosCompatibles = ?, cantidadRecepcionada = ?, id_marca = ?, id_marcaRepuesto = ?, id_tipo = ? " +
+          String consultaSQL = "UPDATE Producto SET nombreProducto = ?, sku = ?, tipoProducto = ?, marcaRepuesto = ?, marcaVehiculo = ?, modelosCompatibles = ?, cantidadRecepcionada = ?, id_marca = ?, id_marcaRepuesto = ?, id_tipo = ?, valor = ?, valorProducto = ? " +
                                "WHERE id_producto = ?";
           
           
           
           PreparedStatement statement = conn.prepareStatement(consultaSQL);
           statement.setString(1, nombreProducto);
-          statement.setString(2, tipoProducto);
-          statement.setString(3, marcaRepuesto);
-          statement.setString(4, marcaVehiculo);
-          statement.setString(5, modelosCompatibles);
-          statement.setInt(6, cantidadRecepcionada);
-          statement.setInt(7, id_marca);
-          statement.setInt(8, id_marcaRepuesto);
-          statement.setInt(9, id_tipo);
-          statement.setInt(10, id_producto);
+          statement.setString(2, sku);
+          statement.setString(3, tipoProducto);
+          statement.setString(4, marcaRepuesto);
+          statement.setString(5, marcaVehiculo);
+          statement.setString(6, modelosCompatibles);
+          statement.setInt(7, cantidadRecepcionada);
+          statement.setInt(8, id_marca);
+          statement.setInt(9, id_marcaRepuesto);
+          statement.setInt(10, id_tipo);
+          statement.setInt(11, valor);
+          statement.setInt(12, valorProducto);
+          statement.setInt(13, id_producto);
           
           
            int filas = statement.executeUpdate();
@@ -384,6 +437,338 @@ public static boolean modificarEstadoProducto(int nuevoEstado, int id_producto) 
         conexion.cerrar();
     }
 }
+
+/*NombreRepuesto
+TipoRepuesto
+MarcaRepuesto
+MarcaVehiculo
+IDproducto
+CodigoSKU
+*/
+
+public static ArrayList<Producto> buscarXnombreRepuesto (String nombreProducto) throws SQLException{
+    
+    Conexion conexion = new Conexion();
+    Connection conn = null;
+    
+    
+            if (!conexion.abrir()) {
+                throw new SQLException("No se pudo relizar conexion con base de datos SQL");
+            }
+            
+            try {
+                ArrayList<Producto> tablaProductos = new ArrayList<>();
+                conn = conexion.enlace;
+                String consultaSQL = "SELECT * FROM Producto WHERE nombreProducto = ? ";
+                PreparedStatement statement = conn.prepareStatement(consultaSQL);
+                statement.setString(1, nombreProducto);
+                ResultSet resultado = statement.executeQuery();
+                
+   
+                
+              while (resultado.next()) {
+              Producto producto = new Producto();
+              producto.setId_producto(resultado.getInt("Id_producto"));
+              producto.setNombreProducto(resultado.getString("nombreProducto"));
+              producto.setSku(resultado.getString("sku"));
+              producto.setTipoProducto(resultado.getString("tipoProducto"));
+              producto.setMarcaRepuesto(resultado.getString("marcaRepuesto"));
+              producto.setMarcaVehiculo(resultado.getString("marcaVehiculo"));
+              producto.setModelosCompatibles(resultado.getString("modelosCompatibles"));
+              producto.setCantidadRecepcionada(resultado.getInt("cantidadRecepcionada"));
+              producto.setId_marca(resultado.getInt("id_marca"));
+              producto.setId_marcaRepuesto(resultado.getInt("id_marcaRepuesto"));
+              producto.setId_tipo(resultado.getInt("id_tipo"));
+              producto.setProducto_estado(resultado.getInt("producto_estado"));
+              producto.setValor(resultado.getInt("valor"));
+              producto.setValorProducto(resultado.getInt("valorProducto"));
+              
+              tablaProductos.add(producto);
+              
+                 }
+          
+          return tablaProductos;
+          
+      } finally {
+          conexion.cerrar();
+      }
+      
+      
+}
+
+
+
+
+public static ArrayList<Producto> buscarXmarcaRepuesto (String marcaRepuesto) throws SQLException{
+    
+    Conexion conexion = new Conexion();
+    Connection conn = null;
+    
+    
+            if (!conexion.abrir()) {
+                throw new SQLException("No se pudo relizar conexion con base de datos SQL");
+            }
+            
+            try {
+                ArrayList<Producto> tablaProductos = new ArrayList<>();
+                conn = conexion.enlace;
+                String consultaSQL = "SELECT * FROM Producto WHERE marcaRepuesto = ? ";
+                PreparedStatement statement = conn.prepareStatement(consultaSQL);
+                statement.setString(1, marcaRepuesto);
+                ResultSet resultado = statement.executeQuery();
+                
+   
+                
+              while (resultado.next()) {
+              Producto producto = new Producto();
+              producto.setId_producto(resultado.getInt("Id_producto"));
+              producto.setNombreProducto(resultado.getString("nombreProducto"));
+              producto.setSku(resultado.getString("sku"));
+              producto.setTipoProducto(resultado.getString("tipoProducto"));
+              producto.setMarcaRepuesto(resultado.getString("marcaRepuesto"));
+              producto.setMarcaVehiculo(resultado.getString("marcaVehiculo"));
+              producto.setModelosCompatibles(resultado.getString("modelosCompatibles"));
+              producto.setCantidadRecepcionada(resultado.getInt("cantidadRecepcionada"));
+              producto.setId_marca(resultado.getInt("id_marca"));
+              producto.setId_marcaRepuesto(resultado.getInt("id_marcaRepuesto"));
+              producto.setId_tipo(resultado.getInt("id_tipo"));
+              producto.setProducto_estado(resultado.getInt("producto_estado"));
+              producto.setValor(resultado.getInt("valor"));
+              producto.setValorProducto(resultado.getInt("valorProducto"));
+              
+              tablaProductos.add(producto);
+              
+                 }
+          
+          return tablaProductos;
+          
+      } finally {
+          conexion.cerrar();
+      }
+      
+      
+}
+
+
+
+
+
+public static ArrayList<Producto> buscarXmarcaVehiculo (String marcaVehiculo) throws SQLException{
+    
+    Conexion conexion = new Conexion();
+    Connection conn = null;
+    
+    
+            if (!conexion.abrir()) {
+                throw new SQLException("No se pudo relizar conexion con base de datos SQL");
+            }
+            
+            try {
+                ArrayList<Producto> tablaProductos = new ArrayList<>();
+                conn = conexion.enlace;
+                String consultaSQL = "SELECT * FROM Producto WHERE marcaVehiculo = ? ";
+                PreparedStatement statement = conn.prepareStatement(consultaSQL);
+                statement.setString(1, marcaVehiculo);
+                ResultSet resultado = statement.executeQuery();
+                
+   
+                
+              while (resultado.next()) {
+              Producto producto = new Producto();
+              producto.setId_producto(resultado.getInt("Id_producto"));
+              producto.setNombreProducto(resultado.getString("nombreProducto"));
+              producto.setSku(resultado.getString("sku"));
+              producto.setTipoProducto(resultado.getString("tipoProducto"));
+              producto.setMarcaRepuesto(resultado.getString("marcaRepuesto"));
+              producto.setMarcaVehiculo(resultado.getString("marcaVehiculo"));
+              producto.setModelosCompatibles(resultado.getString("modelosCompatibles"));
+              producto.setCantidadRecepcionada(resultado.getInt("cantidadRecepcionada"));
+              producto.setId_marca(resultado.getInt("id_marca"));
+              producto.setId_marcaRepuesto(resultado.getInt("id_marcaRepuesto"));
+              producto.setId_tipo(resultado.getInt("id_tipo"));
+              producto.setProducto_estado(resultado.getInt("producto_estado"));
+              producto.setValor(resultado.getInt("valor"));
+              producto.setValorProducto(resultado.getInt("valorProducto"));
+              
+              tablaProductos.add(producto);
+              
+                 }
+          
+          return tablaProductos;
+          
+      } finally {
+          conexion.cerrar();
+      }
+      
+      
+}
+
+
+
+
+
+
+public static ArrayList<Producto> buscarXid (int id_producto) throws SQLException{
+    
+    Conexion conexion = new Conexion();
+    Connection conn = null;
+    
+    
+            if (!conexion.abrir()) {
+                throw new SQLException("No se pudo relizar conexion con base de datos SQL");
+            }
+            
+            try {
+                ArrayList<Producto> tablaProductos = new ArrayList<>();
+                conn = conexion.enlace;
+                String consultaSQL = "SELECT * FROM Producto WHERE id_producto = ? ";
+                PreparedStatement statement = conn.prepareStatement(consultaSQL);
+                statement.setInt(1, id_producto);
+                ResultSet resultado = statement.executeQuery();
+                
+   
+                
+              while (resultado.next()) {
+              Producto producto = new Producto();
+              producto.setId_producto(resultado.getInt("Id_producto"));
+              producto.setNombreProducto(resultado.getString("nombreProducto"));
+              producto.setSku(resultado.getString("sku"));
+              producto.setTipoProducto(resultado.getString("tipoProducto"));
+              producto.setMarcaRepuesto(resultado.getString("marcaRepuesto"));
+              producto.setMarcaVehiculo(resultado.getString("marcaVehiculo"));
+              producto.setModelosCompatibles(resultado.getString("modelosCompatibles"));
+              producto.setCantidadRecepcionada(resultado.getInt("cantidadRecepcionada"));
+              producto.setId_marca(resultado.getInt("id_marca"));
+              producto.setId_marcaRepuesto(resultado.getInt("id_marcaRepuesto"));
+              producto.setId_tipo(resultado.getInt("id_tipo"));
+              producto.setProducto_estado(resultado.getInt("producto_estado"));
+              producto.setValor(resultado.getInt("valor"));
+              producto.setValorProducto(resultado.getInt("valorProducto"));
+              
+              tablaProductos.add(producto);
+              
+                 }
+          
+          return tablaProductos;
+          
+      } finally {
+          conexion.cerrar();
+      }
+      
+      
+}
+
+
+
+
+
+
+public static ArrayList<Producto> buscarXsku (String sku) throws SQLException{
+    
+    Conexion conexion = new Conexion();
+    Connection conn = null;
+    
+    
+            if (!conexion.abrir()) {
+                throw new SQLException("No se pudo relizar conexion con base de datos SQL");
+            }
+            
+            try {
+                ArrayList<Producto> tablaProductos = new ArrayList<>();
+                conn = conexion.enlace;
+                String consultaSQL = "SELECT * FROM Producto WHERE sku = ? ";
+                PreparedStatement statement = conn.prepareStatement(consultaSQL);
+                statement.setString(1, sku);
+                ResultSet resultado = statement.executeQuery();
+                
+   
+                
+              while (resultado.next()) {
+              Producto producto = new Producto();
+              producto.setId_producto(resultado.getInt("Id_producto"));
+              producto.setNombreProducto(resultado.getString("nombreProducto"));
+              producto.setSku(resultado.getString("sku"));
+              producto.setTipoProducto(resultado.getString("tipoProducto"));
+              producto.setMarcaRepuesto(resultado.getString("marcaRepuesto"));
+              producto.setMarcaVehiculo(resultado.getString("marcaVehiculo"));
+              producto.setModelosCompatibles(resultado.getString("modelosCompatibles"));
+              producto.setCantidadRecepcionada(resultado.getInt("cantidadRecepcionada"));
+              producto.setId_marca(resultado.getInt("id_marca"));
+              producto.setId_marcaRepuesto(resultado.getInt("id_marcaRepuesto"));
+              producto.setId_tipo(resultado.getInt("id_tipo"));
+              producto.setProducto_estado(resultado.getInt("producto_estado"));
+              producto.setValor(resultado.getInt("valor"));
+              producto.setValorProducto(resultado.getInt("valorProducto"));
+              
+              tablaProductos.add(producto);
+              
+                 }
+          
+          return tablaProductos;
+          
+      } finally {
+          conexion.cerrar();
+      }
+      
+      
+}
+
+
+
+
+
+
+public static ArrayList<Producto> buscarXtipo (String tipoProducto) throws SQLException{
+    
+    Conexion conexion = new Conexion();
+    Connection conn = null;
+    
+    
+            if (!conexion.abrir()) {
+                throw new SQLException("No se pudo relizar conexion con base de datos SQL");
+            }
+            
+            try {
+                ArrayList<Producto> tablaProductos = new ArrayList<>();
+                conn = conexion.enlace;
+                String consultaSQL = "SELECT * FROM Producto WHERE tipoProducto = ? ";
+                PreparedStatement statement = conn.prepareStatement(consultaSQL);
+                statement.setString(1, tipoProducto);
+                ResultSet resultado = statement.executeQuery();
+                
+   
+                
+              while (resultado.next()) {
+              Producto producto = new Producto();
+              producto.setId_producto(resultado.getInt("Id_producto"));
+              producto.setNombreProducto(resultado.getString("nombreProducto"));
+              producto.setSku(resultado.getString("sku"));
+              producto.setTipoProducto(resultado.getString("tipoProducto"));
+              producto.setMarcaRepuesto(resultado.getString("marcaRepuesto"));
+              producto.setMarcaVehiculo(resultado.getString("marcaVehiculo"));
+              producto.setModelosCompatibles(resultado.getString("modelosCompatibles"));
+              producto.setCantidadRecepcionada(resultado.getInt("cantidadRecepcionada"));
+              producto.setId_marca(resultado.getInt("id_marca"));
+              producto.setId_marcaRepuesto(resultado.getInt("id_marcaRepuesto"));
+              producto.setId_tipo(resultado.getInt("id_tipo"));
+              producto.setProducto_estado(resultado.getInt("producto_estado"));
+              producto.setValor(resultado.getInt("valor"));
+              producto.setValorProducto(resultado.getInt("valorProducto"));
+              
+              tablaProductos.add(producto);
+              
+                 }
+          
+          return tablaProductos;
+          
+      } finally {
+          conexion.cerrar();
+      }
+      
+      
+}
+
+
 
 }
 

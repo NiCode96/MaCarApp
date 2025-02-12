@@ -4,8 +4,22 @@
  */
 package VistaController;
 
-import javax.swing.DefaultListModel;
+import Model.Producto;
+import Conexion.Conexion;
+import java.awt.List;
+import java.beans.Statement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import Model.Marca;
+import Model.MarcaRepuesto;
+import Model.TipoProducto;
+import javax.swing.JOptionPane;
+import Export.ExportarExcel;
+import java.io.IOException;
 
 /**
  *
@@ -22,14 +36,19 @@ public class VistaBodega extends javax.swing.JInternalFrame {
     
     public VistaBodega() {
         initComponents();
-        model.addColumn("MARCA");
-        model.addColumn("TIPO DE REPUESTO");
-        model.addColumn("REPUESTO");
-        model.addColumn("MARCA REPUESTO");
-        model.addColumn("CANTIDAD EN BODEGA");
-        model.addColumn("VALOR DE VENTA");
+        model.addColumn("ID Producto");
+        model.addColumn("Codigo SKU");
+        model.addColumn("Nombre Producto");
+        model.addColumn("Tipo de Repuestos");
+        model.addColumn("Marca Repuesto");
+        model.addColumn("Marca Vehiculo");
+        model.addColumn("Modelos Compatibles");
+        model.addColumn("Cantidad recepcionada");
+        model.addColumn("Valor Producto");
+        model.addColumn("Valor Producto Clientes");
         
         llenarTabla();
+        llenarCombo();
     }
 
     /**
@@ -46,18 +65,20 @@ public class VistaBodega extends javax.swing.JInternalFrame {
         tabla_stock = new javax.swing.JTable();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
-        comboBox_MarcaVehiculo = new javax.swing.JComboBox<>();
+        comboBox_TipoRepuesto = new javax.swing.JComboBox<>();
         comboBox_MarcaProducto = new javax.swing.JComboBox<>();
-        comboBox_TipoProducto = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        comboBox_NombreRepuesto = new javax.swing.JComboBox<>();
+        btn_tipo = new javax.swing.JButton();
+        btn_nombreMarca = new javax.swing.JButton();
+        btn_marca = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        comboBox_MarcaProducto1 = new javax.swing.JComboBox<>();
-        jButton5 = new javax.swing.JButton();
-        comboBox_MarcaProducto2 = new javax.swing.JComboBox<>();
+        btn_marcaVehiculo = new javax.swing.JButton();
+        comboBox_MarcaVehiculo = new javax.swing.JComboBox<>();
+        btn_sku = new javax.swing.JButton();
+        comboBox_IDproducto = new javax.swing.JComboBox<>();
         jButton6 = new javax.swing.JButton();
+        btn_id = new javax.swing.JButton();
+        comboBox_SKU = new javax.swing.JComboBox<>();
 
         setClosable(true);
 
@@ -79,32 +100,65 @@ public class VistaBodega extends javax.swing.JInternalFrame {
 
         jLabel5.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
 
-        comboBox_MarcaVehiculo.addActionListener(new java.awt.event.ActionListener() {
+        comboBox_TipoRepuesto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboBox_MarcaVehiculoActionPerformed(evt);
+                comboBox_TipoRepuestoActionPerformed(evt);
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
-        jButton1.setText("Tipo Repuesto:");
+        btn_tipo.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
+        btn_tipo.setText("Tipo Repuesto:");
+        btn_tipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_tipoActionPerformed(evt);
+            }
+        });
 
-        jButton2.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
-        jButton2.setText("Nombre Repuesto:");
+        btn_nombreMarca.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
+        btn_nombreMarca.setText("Nombre Repuesto:");
+        btn_nombreMarca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_nombreMarcaActionPerformed(evt);
+            }
+        });
 
-        jButton3.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
-        jButton3.setText("Marca Repuesto:");
+        btn_marca.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
+        btn_marca.setText("Marca Repuesto:");
+        btn_marca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_marcaActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 3, 18)); // NOI18N
         jLabel2.setText("Buscar por :");
 
-        jButton4.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
-        jButton4.setText("Marca Vehiculo:");
+        btn_marcaVehiculo.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
+        btn_marcaVehiculo.setText("Marca Vehiculo:");
+        btn_marcaVehiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_marcaVehiculoActionPerformed(evt);
+            }
+        });
 
-        jButton5.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
-        jButton5.setText("Codigo:");
+        btn_sku.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
+        btn_sku.setText("Codigo SKU:");
+        btn_sku.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_skuActionPerformed(evt);
+            }
+        });
 
         jButton6.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
         jButton6.setText("Ver todo el Stock Disponible");
+
+        btn_id.setFont(new java.awt.Font("Helvetica Neue", 3, 13)); // NOI18N
+        btn_id.setText("ID Producto");
+        btn_id.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_idActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -112,34 +166,41 @@ public class VistaBodega extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(31, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(31, 31, 31)
-                            .addComponent(jLabel5)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(comboBox_MarcaProducto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(comboBox_MarcaVehiculo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(comboBox_TipoProducto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(comboBox_MarcaProducto1, 0, 391, Short.MAX_VALUE))
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(comboBox_MarcaProducto2, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jLabel2)))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(btn_nombreMarca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(btn_tipo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(btn_marca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(btn_marcaVehiculo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(comboBox_MarcaProducto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(comboBox_TipoRepuesto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(comboBox_NombreRepuesto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(comboBox_MarcaVehiculo, 0, 391, Short.MAX_VALUE))))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btn_id, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(comboBox_IDproducto, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btn_sku, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(comboBox_SKU, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -158,27 +219,29 @@ public class VistaBodega extends javax.swing.JInternalFrame {
                         .addComponent(jLabel2)
                         .addGap(13, 13, 13)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2)
-                            .addComponent(comboBox_TipoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5)
-                            .addComponent(comboBox_MarcaProducto2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btn_nombreMarca)
+                            .addComponent(comboBox_NombreRepuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboBox_IDproducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_id))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(comboBox_MarcaVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btn_tipo)
+                            .addComponent(comboBox_TipoRepuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_sku)
+                            .addComponent(comboBox_SKU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton3)
+                            .addComponent(btn_marca)
                             .addComponent(comboBox_MarcaProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(comboBox_MarcaProducto1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                    .addComponent(btn_marcaVehiculo)
+                    .addComponent(comboBox_MarcaVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(jButton6)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         pack();
@@ -189,26 +252,328 @@ public class VistaBodega extends javax.swing.JInternalFrame {
     public void llenarTabla(){
         model.setRowCount(0);
         tabla_stock.setModel(model);
+        
+        try {
+            
+            
+            
+        ArrayList<Producto> tablaProductos = Producto.buscarTodasMarcas();
+
+        for (Producto productoIndex : tablaProductos) {
+                        
+        Object[] objeto = new Object[10];
+                 
+                objeto[0]= productoIndex.getId_producto();
+                objeto[1]= productoIndex.getSku();
+                objeto[2]= productoIndex.getNombreProducto();
+                objeto[3]= productoIndex.getTipoProducto();
+                objeto[4]= productoIndex.getMarcaRepuesto();
+                objeto[5]= productoIndex.getMarcaVehiculo();
+                objeto[6]= productoIndex.getModelosCompatibles();
+                objeto[7]= productoIndex.getCantidadRecepcionada();
+                objeto[8]= productoIndex.getValor();
+                objeto[9]= productoIndex.getValorProducto();
+                
+                int estado = productoIndex.getProducto_estado();
+                
+                if (estado != 1) {
+                     model.addRow(objeto);
+                }
+                    
+                    }
+        } catch (Exception e) {
+        }
+        
     }
     
     
+public void llenarCombo() {
+    comboBox_NombreRepuesto.removeAllItems();
+    comboBox_MarcaProducto.removeAllItems();
+    comboBox_IDproducto.removeAllItems();
+    comboBox_SKU.removeAllItems();
+    comboBox_TipoRepuesto.removeAllItems();
+    comboBox_MarcaVehiculo.removeAllItems();
+
+    comboBox_NombreRepuesto.addItem("");
+    comboBox_MarcaProducto.addItem("");
+    comboBox_IDproducto.addItem("");
+    comboBox_SKU.addItem("");
+    comboBox_TipoRepuesto.addItem("");
+    comboBox_MarcaVehiculo.addItem("");
+
+    try {
+        ArrayList<Marca> tablaMarca = Marca.buscarTodasMarcas();
+        ArrayList<MarcaRepuesto> tablaMarcaRepuestos = MarcaRepuesto.buscarTodasMarcas();
+        ArrayList<TipoProducto> tablaTipoProductos = TipoProducto.listarTodos();
+        ArrayList<Producto> tablaProductos = Producto.buscarTodasMarcas();
+
+        for (Producto producto : tablaProductos) {
+            if (producto.getProducto_estado() == 0) {
+                comboBox_NombreRepuesto.addItem(producto.getNombreProducto());
+                comboBox_SKU.addItem(producto.getSku());
+            }
+        }
+
+        for (Marca marca : tablaMarca) {
+            comboBox_MarcaVehiculo.addItem(marca.getNombreMarca());
+        }
+
+        for (MarcaRepuesto marcaRepuesto : tablaMarcaRepuestos) {
+            comboBox_MarcaProducto.addItem(marcaRepuesto.getNombreMarca());
+        }
+
+        for (TipoProducto tipo : tablaTipoProductos) {
+            comboBox_TipoRepuesto.addItem(tipo.getTipoNombre());
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace(); 
+    }
+}
     
-    private void comboBox_MarcaVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBox_MarcaVehiculoActionPerformed
+    
+    
+    private void comboBox_TipoRepuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBox_TipoRepuestoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_comboBox_MarcaVehiculoActionPerformed
+    }//GEN-LAST:event_comboBox_TipoRepuestoActionPerformed
+
+    private void btn_nombreMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nombreMarcaActionPerformed
+        model.setRowCount(0);
+        tabla_stock.setModel(model);
+        String nombreRepuesto = comboBox_NombreRepuesto.getSelectedItem().toString();
+      
+        try {
+            
+             ArrayList<Producto> tablaProductos = Producto.buscarXnombreRepuesto(nombreRepuesto);
+             for (Producto productoIndex : tablaProductos) {
+                 Object[] objeto = new Object[10];
+                 
+                objeto[0]= productoIndex.getId_producto();
+                objeto[1]= productoIndex.getSku();
+                objeto[2]= productoIndex.getNombreProducto();
+                objeto[3]= productoIndex.getTipoProducto();
+                objeto[4]= productoIndex.getMarcaRepuesto();
+                objeto[5]= productoIndex.getMarcaVehiculo();
+                objeto[6]= productoIndex.getModelosCompatibles();
+                objeto[7]= productoIndex.getCantidadRecepcionada();
+                objeto[8]= productoIndex.getValor();
+                objeto[9]= productoIndex.getValorProducto();
+                
+                int estado = productoIndex.getProducto_estado();
+                
+                if (estado != 1) {
+                     model.addRow(objeto);
+                }
+            }
+             
+        } catch (Exception e) {
+        }
+       
+    }//GEN-LAST:event_btn_nombreMarcaActionPerformed
+
+    private void btn_tipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tipoActionPerformed
+        
+        model.setRowCount(0);
+        tabla_stock.setModel(model);
+        String tipoRepuesto = comboBox_TipoRepuesto.getSelectedItem().toString();
+      
+        try {
+            
+             ArrayList<Producto> tablaProductos = Producto.buscarXtipo(tipoRepuesto);
+             for (Producto productoIndex : tablaProductos) {
+                 Object[] objeto = new Object[10];
+                 
+                objeto[0]= productoIndex.getId_producto();
+                objeto[1]= productoIndex.getSku();
+                objeto[2]= productoIndex.getNombreProducto();
+                objeto[3]= productoIndex.getTipoProducto();
+                objeto[4]= productoIndex.getMarcaRepuesto();
+                objeto[5]= productoIndex.getMarcaVehiculo();
+                objeto[6]= productoIndex.getModelosCompatibles();
+                objeto[7]= productoIndex.getCantidadRecepcionada();
+                objeto[8]= productoIndex.getValor();
+                objeto[9]= productoIndex.getValorProducto();
+                
+                int estado = productoIndex.getProducto_estado();
+                
+                if (estado != 1) {
+                     model.addRow(objeto);
+                }
+            }
+             
+        } catch (Exception e) {
+        }
+        
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_btn_tipoActionPerformed
+
+    private void btn_marcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_marcaActionPerformed
+        
+    model.setRowCount(0);
+    tabla_stock.setModel(model);
+    String marcaRepuesto = comboBox_MarcaProducto.getSelectedItem().toString();
+      
+        try {
+            
+             ArrayList<Producto> tablaProductos = Producto.buscarXmarcaRepuesto(marcaRepuesto);
+             for (Producto productoIndex : tablaProductos) {
+                 Object[] objeto = new Object[10];
+                 
+                objeto[0]= productoIndex.getId_producto();
+                objeto[1]= productoIndex.getSku();
+                objeto[2]= productoIndex.getNombreProducto();
+                objeto[3]= productoIndex.getTipoProducto();
+                objeto[4]= productoIndex.getMarcaRepuesto();
+                objeto[5]= productoIndex.getMarcaVehiculo();
+                objeto[6]= productoIndex.getModelosCompatibles();
+                objeto[7]= productoIndex.getCantidadRecepcionada();
+                objeto[8]= productoIndex.getValor();
+                objeto[9]= productoIndex.getValorProducto();
+                
+                int estado = productoIndex.getProducto_estado();
+                
+                if (estado != 1) {
+                     model.addRow(objeto);
+                }
+            }
+             
+        } catch (Exception e) {
+        }
+       
+                                           
+
+        
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_btn_marcaActionPerformed
+
+    private void btn_marcaVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_marcaVehiculoActionPerformed
+    model.setRowCount(0);
+    tabla_stock.setModel(model);
+    String marcaVehiculo = comboBox_MarcaVehiculo.getSelectedItem().toString();
+      
+        try {
+            
+             ArrayList<Producto> tablaProductos = Producto.buscarXmarcaVehiculo(marcaVehiculo);
+             for (Producto productoIndex : tablaProductos) {
+                 Object[] objeto = new Object[10];
+                 
+                objeto[0]= productoIndex.getId_producto();
+                objeto[1]= productoIndex.getSku();
+                objeto[2]= productoIndex.getNombreProducto();
+                objeto[3]= productoIndex.getTipoProducto();
+                objeto[4]= productoIndex.getMarcaRepuesto();
+                objeto[5]= productoIndex.getMarcaVehiculo();
+                objeto[6]= productoIndex.getModelosCompatibles();
+                objeto[7]= productoIndex.getCantidadRecepcionada();
+                objeto[8]= productoIndex.getValor();
+                objeto[9]= productoIndex.getValorProducto();
+                
+                int estado = productoIndex.getProducto_estado();
+                
+                if (estado != 1) {
+                     model.addRow(objeto);
+                }
+            }
+             
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btn_marcaVehiculoActionPerformed
+
+    private void btn_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_idActionPerformed
+    model.setRowCount(0);
+    tabla_stock.setModel(model);
+    int id = Integer.parseInt(comboBox_IDproducto.getSelectedItem().toString());
+      
+        try {
+            
+             ArrayList<Producto> tablaProductos = Producto.buscarXid(id);
+             for (Producto productoIndex : tablaProductos) {
+                 Object[] objeto = new Object[10];
+                 
+                objeto[0]= productoIndex.getId_producto();
+                objeto[1]= productoIndex.getSku();
+                objeto[2]= productoIndex.getNombreProducto();
+                objeto[3]= productoIndex.getTipoProducto();
+                objeto[4]= productoIndex.getMarcaRepuesto();
+                objeto[5]= productoIndex.getMarcaVehiculo();
+                objeto[6]= productoIndex.getModelosCompatibles();
+                objeto[7]= productoIndex.getCantidadRecepcionada();
+                objeto[8]= productoIndex.getValor();
+                objeto[9]= productoIndex.getValorProducto();
+                
+                int estado = productoIndex.getProducto_estado();
+                
+                if (estado != 1) {
+                     model.addRow(objeto);
+                }
+            }
+             
+        } catch (Exception e) {
+        }
+                                                    
+
+    }//GEN-LAST:event_btn_idActionPerformed
+
+    private void btn_skuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_skuActionPerformed
+    model.setRowCount(0);
+    tabla_stock.setModel(model);
+    String sku = comboBox_SKU.getSelectedItem().toString();
+      
+        try {
+            
+             ArrayList<Producto> tablaProductos = Producto.buscarXsku(sku);
+             for (Producto productoIndex : tablaProductos) {
+                 Object[] objeto = new Object[10];
+                 
+                objeto[0]= productoIndex.getId_producto();
+                objeto[1]= productoIndex.getSku();
+                objeto[2]= productoIndex.getNombreProducto();
+                objeto[3]= productoIndex.getTipoProducto();
+                objeto[4]= productoIndex.getMarcaRepuesto();
+                objeto[5]= productoIndex.getMarcaVehiculo();
+                objeto[6]= productoIndex.getModelosCompatibles();
+                objeto[7]= productoIndex.getCantidadRecepcionada();
+                objeto[8]= productoIndex.getValor();
+                objeto[9]= productoIndex.getValorProducto();
+                
+                int estado = productoIndex.getProducto_estado();
+                
+                if (estado != 1) {
+                     model.addRow(objeto);
+                }
+            }
+             
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btn_skuActionPerformed
 
 
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_id;
+    private javax.swing.JButton btn_marca;
+    private javax.swing.JButton btn_marcaVehiculo;
+    private javax.swing.JButton btn_nombreMarca;
+    private javax.swing.JButton btn_sku;
+    private javax.swing.JButton btn_tipo;
+    private javax.swing.JComboBox<String> comboBox_IDproducto;
     private javax.swing.JComboBox<String> comboBox_MarcaProducto;
-    private javax.swing.JComboBox<String> comboBox_MarcaProducto1;
-    private javax.swing.JComboBox<String> comboBox_MarcaProducto2;
     private javax.swing.JComboBox<String> comboBox_MarcaVehiculo;
-    private javax.swing.JComboBox<String> comboBox_TipoProducto;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JComboBox<String> comboBox_NombreRepuesto;
+    private javax.swing.JComboBox<String> comboBox_SKU;
+    private javax.swing.JComboBox<String> comboBox_TipoRepuesto;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -217,4 +582,8 @@ public class VistaBodega extends javax.swing.JInternalFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable tabla_stock;
     // End of variables declaration//GEN-END:variables
+
+
+
+
 }
